@@ -9,12 +9,12 @@ class Datos:
 
 # FUNCIONES
 def CoreInicial():
-    if dato.proceso == 0 : validarBoolRutaInicial()
-    elif dato.proceso == 1 : FicheroEnEscritorio()
+    if dato.proceso == 0 : ValidarRutaInicial()
+    elif dato.proceso == 1 : FicheroEnDescargas()
     elif dato.proceso == 2 : FicheroEnOtraRuta()
     elif dato.proceso == 3 : LecturaDeFichero()
 
-def validarBoolRutaInicial():
+def ValidarRutaInicial():
     print("Bienvenido al Engriptador. \n")
     preguntaInicial = "Ç"
     preguntaInicial = input("Por favor indicanos si el archivo se encuentra en DESCARGAS (S/N) \n")
@@ -29,7 +29,7 @@ def validarBoolRutaInicial():
     else:
         preguntaInicial = input("Por favor indicanos si el archivo se encuentra en DESCARGAS (S/N) \n")
         
-def FicheroEnEscritorio():
+def FicheroEnDescargas():
     print("Vale ahora necesitare tu nombre de usuario de WINDOWS. \n")
     usuarioLocalWindows = input("Si no lo sabes, ejecuta esta linea en el CMD y mira haver cual te cuadra: wmic useraccount get name,fullname\n")
     rutaFinalDeArchivo = "C:/Users/"

@@ -1,7 +1,7 @@
 # VARIABLES
 abcdario = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 letra_indice = dict(zip(abcdario, range(len(abcdario))))
-inidce_letra = dict(zip(range(len(abcdario)), abcdario))
+indice_letra = dict(zip(range(len(abcdario)), abcdario))
 
 # FUNCION DE ENCRYPTACION
 def encrypt(message, key):
@@ -12,7 +12,7 @@ def encrypt(message, key):
         i = 0
         for letter in each_split:
             number = (letra_indice[letter] + letra_indice[key[i]]) % len(abcdario)
-            encrypted += inidce_letra[number]
+            encrypted += indice_letra[number]
             i+=1
 
     return encrypted
@@ -20,21 +20,26 @@ def encrypt(message, key):
     pass
 
  # FUNCION DE ENCRYPTACION
-def dencrypt(message, key):
+def dencrypt(cipher, key):
+    decrypted = ''
+    split_cipher = [cipher [i:i + len (key)] for i in range(0, len(cipher), len(key))]
+    for each_split in split_cipher:
+        i = 0
+        for letter in each_split:
+            number = (letra_indice[letter] - letra_indice[key[i]]) % len(abcdario)
+            decrypted += indice_letra[number]
+            i+=1
 
-
-
-
-
-    pass
-
+    return decrypted
 
 def main():
     key = 'MARC'
     message = 'ENCRIPTADO'
     encrypted_message = encrypt(message, key)
-    print(encrypted_message)
+    dencrypted_message = dencrypt(encrypted_message, key)
 
-    pass
+    print('Mensaje original:' + message)
+    print('Mensaje encyptado:' + encrypted_message)
+    print('Mensaje desencryptado:' + dencrypted_message)
 
 main()

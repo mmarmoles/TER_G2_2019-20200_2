@@ -1,11 +1,21 @@
 from cryptosteganography import CryptoSteganography
 
-crypto_steganography = CryptoSteganography('uoc')
+print("Entrar la contraseña a usar: \n")
+key = input ()
+print(key)
+
+print("Entrar el mensaje secreto: \n")
+message = input ()
+print(message)
+
+crypto_steganography = CryptoSteganography(key)
 
 # Save the encrypted file inside the image
-crypto_steganography.hide('chamelon.jpg', 'output.png', 'A ver cuantos caracteres aguanta y si realmente puede ser tan útil como parece... veremos si lo agunta a o no')
+crypto_steganography.hide('chamelon.jpg', 'output.png', message)
+
+
+
+
 
 secret = crypto_steganography.retrieve('output.png')
 
-print(secret)
-# My secret message

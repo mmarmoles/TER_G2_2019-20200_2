@@ -15,7 +15,7 @@ def CoreInicial():
     elif dato.proceso == 3 : LecturaDeFichero()
 
 def ValidarRutaInicial():
-    print("Bienvenido al Engriptador. \n")
+    print("Bienvenido al Encriptador. \n")
     preguntaInicial = "Ç"
     preguntaInicial = input("Por favor indicanos si el archivo se encuentra en DESCARGAS (S/N) \n")
     if preguntaInicial == "S" or preguntaInicial == "s":
@@ -40,7 +40,7 @@ def FicheroEnDescargas():
     dato.rutaFinalDeArchivo = rutaFinalDeArchivo
 
 def FicheroEnOtraRuta():
-    rutaFinalDeArchivo = input("vale, dame la ruta ABSOLUTA o RELATIVA (donde está el archivo .exe), donde esté el fichero a tratar.\n")
+    rutaFinalDeArchivo = input("vale, dame la ruta ABSOLUTA o RELATIVA (donde está el archivo .txt), donde esté el fichero a tratar\n")
     print("La ruta de tu archivo es: " + rutaFinalDeArchivo)
     dato.proceso = 3
     dato.rutaFinalDeArchivo = rutaFinalDeArchivo
@@ -52,8 +52,78 @@ def LecturaDeFichero():
     archivo.close()
     dato.fin = True
 
-# PROGRAMA
+# PROGRAMA - COMPROBACIÓN DE QUE LOS DATOS INTRODUCIDOS SON CORRECTOS
 dato = Datos()
 while dato.fin != True:
     CoreInicial()
-print(dato.textoGuardado)
+print('Mensaje original en txt: ' + dato.textoGuardado)
+
+# ENCRIPTACIÓN DEL TEXTO
+
+# VARIABLES
+abcdario = 'ABCDEFGHIJKLMNÑOPQRSTUVWXYZ 0987654321.:;()/\_-!#"<>¿?@abcdefghijklmnñopqrstuvwxyz'
+letra_indice = dict(zip(abcdario, range(len(abcdario))))
+indice_letra = dict(zip(range(len(abcdario)), abcdario))
+
+# FUNCION DE ENCRYPTACION
+def encrypt(message, key):
+    encrypted = ''
+    split_message = [message [i:i + len (key)] for i in range(0, len(message), len(key))]
+
+    for each_split in split_message:
+        i = 0
+        for letter in each_split:
+            number = (letra_indice[letter] + letra_indice[key[i]]) % len(abcdario)
+            encrypted += indice_letra[number]
+            i+=1
+
+    return encrypted
+
+
+# FUNCION DE ENCRYPTACION
+def dencrypt(cipher, key):
+    decrypted = ''
+    split_cipher = [cipher [i:i + len (key)] for i in range(0, len(cipher), len(key))]
+    for each_split in split_cipher:
+        i = 0
+        for letter in each_split:
+            number = (letra_indice[letter] - letra_indice[key[i]]) % len(abcdario)
+            decrypted += indice_letra[number]
+            i+=1
+
+    return decrypted
+
+def main():
+    key = 'hola'
+    message = dato.textoGuardado
+    encrypted_message = encrypt(message, key)
+    dencrypted_message = dencrypt(encrypted_message, key)
+
+    print('Mensaje original: ' + message)
+    print('Mensaje encyptado: ' + encrypted_message)
+    print('Mensaje desencryptado: ' + dencrypted_message)
+    print('La clave usada: ' + key)
+
+main()
+
+# LLAMADA A LAS FUNCIONES NECESARIAS PARA LA ESTENOGRAFIA
+
+from cryptosteganography import CryptoSteganography
+
+# print("Entrar la contraseña a usar: \n")
+# key = input ()
+#print(key)
+
+# print("Entrar el mensaje secreto: \n")
+# message = input ()
+# print(message)
+
+crypto_steganography = CryptoSteganography('key')
+
+# Save the encrypted file inside the image | la imagen debe de estar en el mismo sito que está el código
+crypto_steganography.hide('chamelon.jpg', 'output.png', 'encrypted_message') #no me funciona la llamda al mensaje encriptado.
+secret = crypto_steganography.retrieve('output.png')
+
+# My secret message
+print(secret)
+

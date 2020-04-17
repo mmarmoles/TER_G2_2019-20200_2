@@ -48,7 +48,6 @@ def CoreEncriptacion():
         DescifradoCesar()
         #DescifradoVigenere()
         #DescifradoEstenogradia()
-    dato.fin = True
 
 def msg_and_key():
     msg = dato.textoGuardado.upper()
@@ -170,9 +169,10 @@ def LecturaDeFichero():
     if dato.textoGuardado == "":
         archivo = open(dato.rutaConArchivo, 'r')
         dato.textoGuardado = archivo.read()
+        dato.proceso = 4
     else:
         archivo.close()
-        dato.proceso = 4
+        input("El mensaje es: \n" + dato.textoGuardado)
     
 
 ### FUNCIONES DE LOS CIFRADOS ###

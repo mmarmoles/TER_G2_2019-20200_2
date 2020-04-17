@@ -85,5 +85,5 @@ for i in range(28):
             descifrado += abc[nueva_pos]
         else:
             descifrado+= l
-    msj = (f"ROT-{i}:", descifrado)
-    print(msj)
+    msj = (descifrado)
+print("Mensaje:", msj)

@@ -8,10 +8,8 @@ class Datos:
     nombreDeArchivo = "test.txt"
     rutaConArchivo = ""
     textoGuardado = ""
-    fin = False
-       
+    fin = False       
     clave = ""
-
     mensajeCifrado = ""
     mensajeDescrifado = ""
     fin = False
@@ -89,8 +87,16 @@ def CifradoEstenogradia():
     
 #def CifradoVigenere():
 
-#def CifradoCesar():
-
+def CifradoCesar():
+    n = int(input("Desplazamiento > "))
+    abc = "abcdefghijklmnñopqrstuvwxyz"
+    for l in texto:
+        if l in abc:
+            pos_letra = abc.index(l)
+            nueva_pos = (pos_letra + n) % len(abc)
+            dato.mensajeCifrado += abc[nueva_pos]
+        else:
+            cifrado+= l
 def DescifradoEstenogradia():
     split_cipher = [dato.mensajeCifrado [i:i + len (dato.clave)] for i in range(0, len(cipher), len(dato.clave))]
     for each_split in split_cipher:
@@ -105,6 +111,18 @@ def DescifradoEstenogradia():
     # Save the encrypted file inside the image | la imagen debe de estar en el mismo sito que está el código
     crypto_steganography.hide('image.png', 'output.png', 'encrypted_message') #no me funciona la llamda al mensaje encriptado.
     secret = crypto_steganography.retrieve('output.png')
+def DescifradoCesar():
+    for i in range(28):
+        descifrado = ""
+        for l in texto:
+            if l in abc:
+                pos_letra = abc.index(l)
+                nueva_pos = (pos_letra - i) % len(abc)
+                descifrado += abc[nueva_pos]
+            else:
+                descifrado+= l
+        msj = (descifrado)
+    print("Mensaje:", msj)
 
 # VARIABLES STATICAS
 abcdario = 'ABCDEFGHIJKLMNÑOPQRSTUVWXYZ 0987654321.:;()/\_-!#"<>¿?@abcdefghijklmnñopqrstuvwxyz'
@@ -119,34 +137,34 @@ print(dato.textoGuardado)
 
 ### JUANJO - CESAR
 
-texto = input("Mensaje > ")
+##texto = input("Mensaje > ")
 
-n = int(input("Desplazamiento > "))
+#n = int(input("Desplazamiento > "))
 
-abc = "abcdefghijklmnñopqrstuvwxyz"
+#abc = "abcdefghijklmnñopqrstuvwxyz"
 
-cifrado = ""
+##cifrado = ""
 
-for l in texto:
-    if l in abc:
-        pos_letra = abc.index(l)
-        nueva_pos = (pos_letra + n) % len(abc)
-        cifrado+= abc[nueva_pos]
-    else:
-        cifrado+= l
+#for l in texto:
+#    if l in abc:
+#        pos_letra = abc.index(l)
+#        nueva_pos = (pos_letra + n) % len(abc)
+#        cifrado+= abc[nueva_pos]
+#    else:
+#        cifrado+= l
 
-print("Mensaje cifrado:", cifrado)
+## print("Mensaje cifrado:", cifrado)
 
 # DESCIFRADO
-for i in range(28):
-    descifrado = ""
-    for l in texto:
-        if l in abc:
-            pos_letra = abc.index(l)
-            nueva_pos = (pos_letra - i) % len(abc)
-            descifrado += abc[nueva_pos]
-        else:
-            descifrado+= l
-    msj = (descifrado)
-print("Mensaje:", msj)
+#for i in range(28):
+#    descifrado = ""
+ #   for l in texto:
+  #      if l in abc:
+   #         pos_letra = abc.index(l)
+    #        nueva_pos = (pos_letra - i) % len(abc)
+     #       descifrado += abc[nueva_pos]
+      #  else:
+       #     descifrado+= l
+   # msj = (descifrado)
+#print("Mensaje:", msj)
 

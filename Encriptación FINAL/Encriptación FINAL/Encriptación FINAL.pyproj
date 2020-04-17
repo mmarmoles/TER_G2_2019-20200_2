@@ -11,6 +11,7 @@
     <OutputPath>.</OutputPath>
     <Name>Encriptación FINAL</Name>
     <RootNamespace>Encriptación FINAL</RootNamespace>
+    <TestFramework>Pytest</TestFramework>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -21,16 +22,7 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="CORE.py" />
     <Compile Include="Encriptación_FINAL.py" />
-    <Compile Include="Estenografia.py" />
-    <Compile Include="module1.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="TEST-EG.py" />
-    <Compile Include="TEST.py" />
-    <Compile Include="Vigener-variacion.py" />
-    <Compile Include="vigenere.py" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in

@@ -1,4 +1,5 @@
 # LIBRERIAS
+import sys
 from cryptosteganography import CryptoSteganography
 
 # CLASES
@@ -7,12 +8,19 @@ class Datos:
     rutaFinalDeArchivo = ""
     nombreDeArchivo = "test.txt"
     rutaConArchivo = ""
-    textoGuardado = ""
+    
     clave = ""
+    claveTemp = ""
+    clavecita = ""
+
     mensajeCifrado = ""
     mensajeDescrifado = ""
 
+    textoGuardado = ""
     textoCesar = ""
+    textoVigenere = ""
+
+    abc = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ"
 
     fin = False       
     cifrarODescifrar = True
@@ -30,114 +38,28 @@ def CoreInicial():
 
 def CoreEncriptacion():
     dato.clave = input("Dame la clave de cifado / descifrado.\n")
+    #dato.clave = dato.clave.upper()
     print("Ok, tu clave es: " + dato.clave)
     accion = "F"
+    accion = input("Quieres cifrar (C) o Descifrar (D).\n")
     if accion == "C" or accion == "c":
         dato.cifrarODescifrar = True
     elif accion == "D" or accion == "d":
         dato.cifrarODescifrar = False
-    else:
-        accion = input("Quieres cifrar (C) o Descifrar (D).\n")
+
 
     if dato.cifrarODescifrar == True:
         print("Cifrando...")
         #CifradoEstenogradia()
-        #CifradoVigenere()
+        CifradoVigenere()
         CifradoCesar()
         #CifradoPalabraClave()
     else: 
         print("Descifrando...")
         #DescifradoPalabraClave()
         DescifradoCesar()
-        #DescifradoVigenere()
+        DescifradoVigenere()
         #DescifradoEstenogradia()
-
-def msg_and_key():
-    msg = dato.textoGuardado.upper()
-    #msg = input("Enter message: ").upper()
-    key = input("Enter key: ").upper()
-    #variable to store mapped key
-    key_map = ""
-
-    j = 0
-    for i in range(len(msg)):
-        if ord(msg[i]) == 32:
-        #ignoring space
-            key_map += " "
-        else:
-            if j < len(dato.clave):
-                key_map += key[j]
-                j += 1
-            else:
-                j = 0
-                key_map += key[j]
-                j += 1
-
-    return msg, key_map
-
-def create_vigenere_table():
-    table = []
-    for i in range(26):
-        table.append([])
-
-    for row in range(26):
-        for column in range(26):
-            if (row + 65) + column > 90:
-              #moving back to A after Z
-                table[row].append(chr((row+65) + column - 26))
-            else:
-                table[row].append(chr((row+65) + column))
-
-    return table
-
-def cipher_encryption(message, mapped_key):
-    table = create_vigenere_table()
-    encrypted_text = ""
-
-    for i in range(len(message)):
-        if message[i] == chr(32):
-            encrypted_text += " "
-        else:
-            #getting element at specific index of table
-            row = ord(message[i]) - 65
-            column = ord(mapped_key[i]) - 65
-            encrypted_text += table[row][column]
-
-    print("Mensaje Encriptado: {}".format(encrypted_text))
-
-def itr_count(mapped_key, message):
-    counter = 0
-    result = ""
-
-    #starting alphabets from mapped key letter and finishing all 26 letters from it(form z move to a)
-    for i in range(26):
-        if mapped_key + i > 90:
-            result += chr(mapped_key + (i-26))
-        else:
-            result += chr(mapped_key + i)
-
-    #counting the number of iterations it take from mapped key to ciphertext letter
-    for i in range(len(result)):
-        if result[i] == chr(message):
-            break
-        else:
-            counter += 1        
-    return counter
-
-def cipher_decryption(message, mapped_key):
-    table = create_vigenere_table()
-    decrypted_text = ""
-
-    for i in range(len(message)):
-        if message[i] == chr(32):
-            # ignoring space
-            decrypted_text += " "
-        else:
-            # adding number of iterations, it takes to reach from mapped key letter to cipher letter in 65
-            # by doing so we get column header of ciphertext letter, which happens to be decrypted letter
-            decrypted_text += chr(65 + itr_count(ord(mapped_key[i]), ord(message[i])))
-
-    print("Decrypted Message: {}".format(decrypted_text))
 
 def ValidarRutaInicial():
     print("Bienvenido al Engriptador. \n")
@@ -185,31 +107,61 @@ def CifradoEstenogradia():
     for each_split in split_message:
         i = 0
         for letra in each_split:
-            numero = (letra_indice[letra] + letra_indice[dato.clave[i]]) % len(abcdario)
+            numero = (letra_indice[letra] + letra_indice[dato.clave[i]]) % len(dato.abcdario)
             mensajeCifrado += indice_letra[numero]
             i+=1
     dato.mensajeCifrado = encriptado
     
-#def CifradoVigenere():
+def CifradoVigenere():
+    dato.textoGuardado = dato.textoGuardado.upper()
+    #dato.textoGuardado = dato.textoGuardado.replace(' ', '').upper()
+    dato.clave = dato.clave.replace(' ', '').upper()
+    if len(dato.textoGuardado)>len(dato.clave):
+        for i in range(int(len(dato.textoGuardado)/len(dato.clave))):
+            dato.claveTemp += dato.clave
+        dato.claveTemp += dato.clave[:len(dato.textoGuardado)%len(dato.clave)]	## longitud sea la misma que la del mensaje  ##
+    elif len(dato.textoGuardado)<len(dato.clave):	# Si la longitud del mensaje es menor que la de la clave...
+        dato.claveTemp = dato.clave[:len(dato.textoGuardado)]	# Se trunca la clave para que tenga la misma longitud que el mensaje #
+    elif len(dato.textoGuardado)==len(dato.clave):	# Si la longitud del mensaje es igual que la de la clave... #
+        dato.claveTemp = dato.clave	# Se guarda la clave tal cual se encuentra en 'clave_original' #
+    else:
+        print ('Ha ocurrido un error inesperado. Terminando ejecución...')
+        sys.exit(1)
+    print ('Mensaje original: ' + dato.textoGuardado)
+    print ('Palabra clave: ' + dato.clave)
+    print ()
+
+    print ('Cifrando...')
+    for i in range(len(dato.textoGuardado)):
+        if dato.textoGuardado[i] == " ":
+            i += 1
+            dato.textoVigenere += " "
+        else:
+            x = dato.abc.find(dato.textoGuardado[i])	# Se guarda la posición del caracter del mensaje en el abecedario
+            y = dato.abc.find(dato.claveTemp[i])	# Se guarda la posición del caracter de la clave en el abecedario
+            suma = x+y	# Se calcula la suma de ambas posiciones
+            modulo = suma%len(dato.abc)	# Se calcula el módulo de la suma respecto a la longitud del abecedario
+            dato.textoVigenere += dato.abc[modulo]	# Se concatena el caracter cifrado con 'cifrado'
+    print ('Mensaje cifrado: ' + dato.textoVigenere)
+    print ()
 
 def CifradoCesar():
     n = int(input("Desplazamiento > "))
-    abc = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ"
     for l in dato.textoGuardado:
-        if l in abc:
-            pos_letra = abc.index(l)
-            nueva_pos = (pos_letra + n) % len(abc)
-            dato.textoCesar += abc[nueva_pos]
+        if l in dato.abc:
+            pos_letra = dato.abc.index(l)
+            nueva_pos = (pos_letra + n) % len(dato.abc)
+            dato.textoCesar += dato.abc[nueva_pos]
         else:
             dato.textoCesar += l        
-    print("Mensaje:", dato.textoCesar)
+    print("Mensaje Cesar:", dato.textoCesar, "\n")
 
 def DescifradoEstenogradia():
     split_cipher = [dato.mensajeCifrado [i:i + len (dato.clave)] for i in range(0, len(cipher), len(dato.clave))]
     for each_split in split_cipher:
         i = 0
         for letra in each_split:
-            numero = (letra_indice[letra] - letra_indice[dato.clave[i]]) % len(abcdario)
+            numero = (letra_indice[letra] - letra_indice[dato.clave[i]]) % len(dato.abcdario)
             desencriptado += indice_letra[numero]
             i+=1
     dato.textoCesar = desencriptado
@@ -219,25 +171,54 @@ def DescifradoEstenogradia():
     crypto_steganography.hide('image.png', 'output.png', 'encrypted_message') #no me funciona la llamda al mensaje encriptado.
     secret = crypto_steganography.retrieve('output.png')
 
+def DescifradoVigenere():
+    dato.textoGuardado = dato.textoGuardado.upper()
+    #dato.textoGuardado = dato.textoGuardado.replace(' ', '').upper()
+    dato.clave = dato.clave.replace(' ', '').upper()
+    if len(dato.textoGuardado)>len(dato.clave):
+        for i in range(int(len(dato.textoGuardado)/len(dato.clave))):
+            dato.claveTemp += dato.clave
+        dato.claveTemp += dato.clave[:len(dato.textoGuardado)%len(dato.clave)]	## longitud sea la misma que la del mensaje  ##
+    elif len(dato.textoGuardado)<len(dato.clave):	# Si la longitud del mensaje es menor que la de la clave...
+        dato.claveTemp = dato.clave[:len(dato.textoGuardado)]	# Se trunca la clave para que tenga la misma longitud que el mensaje #
+    elif len(dato.textoGuardado)==len(dato.clave):	# Si la longitud del mensaje es igual que la de la clave... #
+        dato.claveTemp = dato.clave	# Se guarda la clave tal cual se encuentra en 'clave_original' #
+    else:
+        print ('Ha ocurrido un error inesperado. Terminando ejecución...')
+        sys.exit(1)
+    print ('Mensaje original: ' + dato.textoGuardado)
+    print ('Palabra clave: ' + dato.clave)
+    print ()
+
+    print ('Descifrando...')
+    for i in range(len(dato.textoGuardado)):
+        if dato.textoGuardado[i] == " ":
+            i += 1
+            dato.textoVigenere += " "
+        else:
+            x = dato.abc.find(dato.textoGuardado[i])	# Se guarda la posición del caracter del mensaje cifrado en el abecedario
+            y = dato.abc.find(dato.claveTemp[i])	# Se guarda la posición del caracter de la clave en el abecedario
+            resta = x-y	# Se calcula la resta de ambas posiciones
+            modulo = resta%len(dato.abc)	# Se calcula el módulo de la resta respecto a la longitud del abecedario
+            dato.textoVigenere += dato.abc[modulo]	# Se concatena el caracter descifrado con 'descifrado'
+    print ('Mensaje descifrado: ' + dato.textoVigenere)
+    print ()
+
 def DescifradoCesar():
     for i in range(28):
         descifrado = ""
         for l in dato.textoGuardado:
-            if l in abc:
-                pos_letra = abc.index(l)
-                nueva_pos = (pos_letra - i) % len(abc)
-                dato.textoCesar += abc[nueva_pos]
+            if l in dato.abc:
+                pos_letra = dato.abc.index(l)
+                nueva_pos = (pos_letra - i) % len(dato.abc)
+                dato.textoCesar += dato.abc[nueva_pos]
             else:
                 dato.textoCesar += l
     print("Mensaje:", dato.textoCesar)
 
-# VARIABLES STATICAS
-abcdario = 'ABCDEFGHIJKLMNÑOPQRSTUVWXYZ 0987654321.:;()/\_-!#"<>¿?@abcdefghijklmnñopqrstuvwxyz'
-letra_indice = dict(zip(abcdario, range(len(abcdario))))
-indice_letra = dict(zip(range(len(abcdario)), abcdario))
-
 # PROGRAMA
 dato = Datos()
+clave = ""
 while dato.fin != True:
     CoreInicial()
 print(dato.textoGuardado)

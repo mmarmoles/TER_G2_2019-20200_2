@@ -18,6 +18,9 @@ class Datos:
     cifrarODescifrar = True
 
 # FUNCIONES
+def pasarAMayusculas():
+    dato.textoGuardado = dato.textoGuardado.upper()
+
 def CoreInicial():
     if dato.proceso == 0 : ValidarRutaInicial()
     elif dato.proceso == 1 : FicheroEnDescargas()
@@ -170,12 +173,12 @@ def LecturaDeFichero():
         archivo = open(dato.rutaConArchivo, 'r')
         dato.textoGuardado = archivo.read()
         dato.proceso = 4
-    else:
+    #else:
         archivo.close()
+        pasarAMayusculas()
         input("El mensaje es: \n" + dato.textoGuardado)
-    
 
-### FUNCIONES DE LOS CIFRADOS ###
+    ### FUNCIONES DE LOS CIFRADOS ###
     # CIFRADOS
 def CifradoEstenogradia():
     split_message = [dato.textoGuardado [i:i + len(dato.clave)] for i in range(0, len(dato.textoGuardado), len(dato.clave))]
@@ -191,14 +194,16 @@ def CifradoEstenogradia():
 
 def CifradoCesar():
     n = int(input("Desplazamiento > "))
-    abc = "abcdefghijklmnñopqrstuvwxyz"
-    for l in dato.textoCesar:
+    abc = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ"
+    for l in dato.textoGuardado:
         if l in abc:
             pos_letra = abc.index(l)
             nueva_pos = (pos_letra + n) % len(abc)
-            dato.mensajeCifrado += abc[nueva_pos]
+            dato.textoCesar += abc[nueva_pos]
         else:
-            cifrado+= l
+            dato.textoCesar += l        
+    print("Mensaje:", dato.textoCesar)
+
 def DescifradoEstenogradia():
     split_cipher = [dato.mensajeCifrado [i:i + len (dato.clave)] for i in range(0, len(cipher), len(dato.clave))]
     for each_split in split_cipher:
@@ -207,24 +212,24 @@ def DescifradoEstenogradia():
             numero = (letra_indice[letra] - letra_indice[dato.clave[i]]) % len(abcdario)
             desencriptado += indice_letra[numero]
             i+=1
-    dato.mensajeDescrifado = desencriptado
+    dato.textoCesar = desencriptado
     crypto_steganography = CryptoSteganography('key')
 
     # Save the encrypted file inside the image | la imagen debe de estar en el mismo sito que está el código
     crypto_steganography.hide('image.png', 'output.png', 'encrypted_message') #no me funciona la llamda al mensaje encriptado.
     secret = crypto_steganography.retrieve('output.png')
+
 def DescifradoCesar():
     for i in range(28):
         descifrado = ""
-        for l in texto:
+        for l in dato.textoGuardado:
             if l in abc:
                 pos_letra = abc.index(l)
                 nueva_pos = (pos_letra - i) % len(abc)
-                descifrado += abc[nueva_pos]
+                dato.textoCesar += abc[nueva_pos]
             else:
-                descifrado+= l
-        msj = (descifrado)
-    print("Mensaje:", msj)
+                dato.textoCesar += l
+    print("Mensaje:", dato.textoCesar)
 
 # VARIABLES STATICAS
 abcdario = 'ABCDEFGHIJKLMNÑOPQRSTUVWXYZ 0987654321.:;()/\_-!#"<>¿?@abcdefghijklmnñopqrstuvwxyz'

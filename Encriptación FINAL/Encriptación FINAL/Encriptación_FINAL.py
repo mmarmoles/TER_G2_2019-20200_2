@@ -51,14 +51,14 @@ def CoreEncriptacion():
     if dato.cifrarODescifrar == True:
         print("Cifrando...")
         #CifradoEstenogradia()
-        CifradoVigenere()
+        #CifradoVigenere()
         CifradoCesar()
         #CifradoPalabraClave()
     else: 
         print("Descifrando...")
         #DescifradoPalabraClave()
         DescifradoCesar()
-        DescifradoVigenere()
+        #DescifradoVigenere()
         #DescifradoEstenogradia()
 
 def ValidarRutaInicial():
@@ -205,16 +205,15 @@ def DescifradoVigenere():
     print ()
 
 def DescifradoCesar():
-    for i in range(28):
-        descifrado = ""
-        for l in dato.textoGuardado:
-            if l in dato.abc:
-                pos_letra = dato.abc.index(l)
-                nueva_pos = (pos_letra - i) % len(dato.abc)
-                dato.textoCesar += dato.abc[nueva_pos]
-            else:
-                dato.textoCesar += l
-    print("Mensaje:", dato.textoCesar)
+    i = int(input("Desplazamiento > "))
+    for l in dato.textoGuardado:
+        if l in dato.abc:
+            pos_letra = dato.abc.index(l)
+            nueva_pos = (pos_letra - i) % len(dato.abc)
+            dato.textoCesar += dato.abc[nueva_pos]
+        else:
+            dato.textoCesar += l
+    print("Mensaje:", dato.textoCesar, "\n")
 
 # PROGRAMA
 dato = Datos()

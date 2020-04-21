@@ -34,7 +34,6 @@ def CoreInicial():
 
 def CoreEncriptacion():
     dato.clave = input("Dame la clave de cifado / descifrado.\n")
-    #dato.clave = dato.clave.upper()
     print("Ok, tu clave es: " + dato.clave)
     accion = "F"
     accion = input("Quieres cifrar (C) o Descifrar (D).\n")
@@ -42,7 +41,6 @@ def CoreEncriptacion():
         dato.cifrarODescifrar = True
     elif accion == "D" or accion == "d":
         dato.cifrarODescifrar = False
-
 
     if dato.cifrarODescifrar == True:
         print("Cifrando...")
@@ -91,13 +89,12 @@ def LecturaDeFichero():
         archivo = open(dato.rutaConArchivo, 'r')
         dato.textoGuardado = archivo.read()
         dato.proceso = 4
-    #else:
         archivo.close()
         pasarAMayusculas()
         print("El mensaje es: \n" + dato.textoGuardado)
 
-    ### FUNCIONES DE LOS CIFRADOS ###
-    # CIFRADOS
+### FUNCIONES DE LOS CIFRADOS ###
+# CIFRADOS
 def CifradoEstenogradia():
     split_message = [dato.textoGuardado [i:i + len(dato.clave)] for i in range(0, len(dato.textoGuardado), len(dato.clave))]
     for each_split in split_message:
@@ -125,21 +122,18 @@ def DescifradoEstenogradia():
 
 def CifradoVigenere():
     dato.textoGuardado = dato.textoGuardado.upper()
-    #dato.textoGuardado = dato.textoGuardado.replace(' ', '').upper()
     dato.clave = dato.clave.replace(' ', '').upper()
     if len(dato.textoGuardado)>len(dato.clave):
         for i in range(int(len(dato.textoGuardado)/len(dato.clave))):
             dato.claveTemp += dato.clave
-        dato.claveTemp += dato.clave[:len(dato.textoGuardado)%len(dato.clave)]	## longitud sea la misma que la del mensaje  ##
-    elif len(dato.textoGuardado)<len(dato.clave):	# Si la longitud del mensaje es menor que la de la clave...
-        dato.claveTemp = dato.clave[:len(dato.textoGuardado)]	# Se trunca la clave para que tenga la misma longitud que el mensaje #
-    elif len(dato.textoGuardado)==len(dato.clave):	# Si la longitud del mensaje es igual que la de la clave... #
-        dato.claveTemp = dato.clave	# Se guarda la clave tal cual se encuentra en 'clave_original' #
+        dato.claveTemp += dato.clave[:len(dato.textoGuardado)%len(dato.clave)]
+    elif len(dato.textoGuardado)<len(dato.clave):
+        dato.claveTemp = dato.clave[:len(dato.textoGuardado)]
+    elif len(dato.textoGuardado)==len(dato.clave):
+        dato.claveTemp = dato.clave
     else:
         print ('Ha ocurrido un error inesperado. Terminando ejecución...')
         sys.exit(1)
-    #print ('Mensaje original: ' + dato.textoGuardado)
-    #print ('Palabra clave: ' + dato.clave)
     print ()
 
     print ('Cifrando...')
@@ -148,10 +142,10 @@ def CifradoVigenere():
             i += 1
             dato.textoVigenere += " "
         else:
-            x = dato.abc.find(dato.textoGuardado[i])	# Se guarda la posición del caracter del mensaje en el abecedario
-            y = dato.abc.find(dato.claveTemp[i])	# Se guarda la posición del caracter de la clave en el abecedario
-            suma = x+y	# Se calcula la suma de ambas posiciones
-            modulo = suma%len(dato.abc)	# Se calcula el módulo de la suma respecto a la longitud del abecedario
+            x = dato.abc.find(dato.textoGuardado[i])
+            y = dato.abc.find(dato.claveTemp[i])
+            suma = x+y
+            modulo = suma%len(dato.abc)
             dato.textoVigenere += dato.abc[modulo]
     print ('Vigenere cifrado: ' + dato.textoVigenere + "\n")
 
